@@ -4,6 +4,7 @@
   "description": "password-generator.js",
   "main": "src/password-generator.js",
   "scripts": {
+    "lint": "eslint src/*.js",
     "test": "jest --collectCoverage"
   },
   "repository": {
