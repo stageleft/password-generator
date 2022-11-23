@@ -40,7 +40,7 @@ JSON object with 2 parameter.
 
 ## Usage in Web
 
-See sample_html/password-generator.html as sample.
+See [sample_html/password-generator.html](https://github.com/stageleft/password-generator/blob/main/sample_html/password-generator.html) as a sample.
 
 * include password-generator.js in html file.
 ```html
@@ -72,7 +72,7 @@ See sample_html/password-generator.html as sample.
 
 ## Usage in Node.js
 
-See __test__/password-generator.test.js as sample.
+See [\_\_test\_\_/password-generator.test.js](https://github.com/stageleft/password-generator/blob/main/__test__/password-generator.test.js) as a sample.
 
 * include password-generator.js and node:crypto.
 ```javascript
