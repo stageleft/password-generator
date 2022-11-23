@@ -44,7 +44,11 @@ class pwgenerator {
         }
         return true;
     }
-    calc_random(ubound){
+    calc_random(ubound){ // return random integer value from 0 to (ubound - 1)
+        if (ubound === 0) {
+            return 0;
+        }
+
         let count = Math.floor( random_max / ubound );
         let seed_max = ubound * count;
         let seed;
@@ -86,3 +90,5 @@ class pwgenerator {
         return result_string;
     }
 }
+
+module.exports = pwgenerator;

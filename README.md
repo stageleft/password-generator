@@ -70,9 +70,32 @@ See sample_html/password-generator.html as sample.
 </script>
 ```
 
-## (T.B.D.) Usage in Node.js
+## Usage in Node.js
 
-## (T.B.D.) Specification Detail
+See __test__/password-generator.test.js as sample.
+
+* include password-generator.js and node:crypto.
+```javascript
+const pwgenerator = require("../src/password-generator.js");
+const crypto = require('node:crypto');
+```
+* define pwgenerator() object with node:crypto.webcrypto.
+```javascript
+let password_generator = new pwgenerator(crypto.webcrypto);
+```
+* define password generation rule.
+```javascript
+let number_ALPHABET_alphabet_32 = {
+    "pwclass": ["0123456789",
+              "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+              "abcdefghijklmnopqrstuvwxyz"],
+    "pwlength": 32
+};
+```
+* call object.generate() with rule of password.
+```javascript
+let password = password_generator.generate(setup);
+```
 
 ## Reference
 
