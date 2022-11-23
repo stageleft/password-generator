@@ -1,0 +1,23 @@
+{
+  "name": "password-generator",
+  "version": "1.0.0",
+  "description": "password-generator.js",
+  "main": "src/password-generator.js",
+  "scripts": {
+    "test": "jest --collectCoverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stageleft/password-generator.git"
+  },
+  "keywords": [],
+  "author": "SUGANO Shogo",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/stageleft/password-generator/issues"
+  },
+  "homepage": "https://github.com/stageleft/password-generator#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
