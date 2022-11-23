@@ -12,11 +12,11 @@ Sample case: generating a 32-character password containing 1 number, 1 uppercase
 Rule description:
 ```json
 {
-    pwclass: ["0123456789",
+    "pwclass": ["0123456789",
               "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
               "abcdefghijklmnopqrstuvwxyz"],
-    pwlength: 32
-};
+    "pwlength": 32
+}
 ```
 
 Sample result:
@@ -56,10 +56,10 @@ See sample_html/password-generator.html as sample.
 ```html
 <script type="text/javascript">
   let number_ALPHABET_alphabet_32 = {
-    pwclass: ["0123456789",
+    "pwclass": ["0123456789",
               "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
               "abcdefghijklmnopqrstuvwxyz"],
-    pwlength: 32
+    "pwlength": 32
   };
 </script>
 ```
