@@ -33,3 +33,16 @@ test('test with 32 letter, 1 class with 10 letter', ()=>{
         expect(password).toMatch(/[0-9]{32}/);
     }
 });
+
+test('test with 8 letter, 3 classes', ()=>{
+    let setup = {
+        "pwclass": ["0123456789",
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                    "abcdefghijklmnopqrstuvwxyz"],
+        "pwlength": 8
+    };
+    for (i = 0; i < 100; i++) {
+        let password = password_generator.generate(setup);
+        expect(password).toMatch(/[0-9A-Za-z]{8}/);
+    }
+});
