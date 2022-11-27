@@ -71,6 +71,15 @@ class pwgenerator {
         }
         return result;
     }
+    change_index_to_last(input_string, charIndexToLast) {
+        return input_string.substring(0, charIndexToLast) +
+               input_string.substring(charIndexToLast + 1, input_string.length) +
+               input_string[charIndexToLast]; 
+    }
+    change_random_index_to_last(input_string) {
+        let charIndexToLast = this.calc_random(input_string.length);
+        return this.change_index_to_last(input_string, charIndexToLast);
+    }
     generate(input) {
         if (this.validate(input) === false) {
             return null;
@@ -87,9 +96,8 @@ class pwgenerator {
         result_string = result_string + this.generate_with_each_pwclass(input.pwclass[input.pwclass.length - 1], letter_count);
 
         // shuffle letters
-        for (let j = 0; j < 10000; j++) {
-            let charToLast = this.calc_random(input.pwlength - 1);
-            result_string = result_string.substring(0, charToLast) + result_string.substring(charToLast + 1, input.pwlength) + result_string[charToLast]; 
+        for (let j = 0; j < result_string.length * 100; j++) {
+            result_string = this.change_random_index_to_last(result_string);
         }
 
         return result_string;
