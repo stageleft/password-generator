@@ -9,11 +9,10 @@
 //   classに指定される「パスワード使用文字クラス」は、必ず１文字以上を記入した文字列であること。空配列も認めない。
 //      パスワード使用文字クラスは、利用する文字そのものを指定し、256文字未満であること。
 //   length の長さは、class.length 以上の大きさで指定されること。また、65536未満であること。
-const random_max = Uint8Array.BYTES_PER_ELEMENT * 256 - 1;
-const length_max = 65535;
-
 class pwgenerator {
     constructor(crypto_module) {
+        this.random_max = Uint8Array.BYTES_PER_ELEMENT * 256 - 1;
+        this.length_max = 65535;
         if (crypto_module === null || crypto_module === undefined) {
             if (window !== null && window.crypto !== null) {
                 this.cryptomodule = window.crypto;
@@ -34,12 +33,12 @@ class pwgenerator {
             return false;
         } else {
             for (let letters of input.pwclass) {
-                if (toString.call(letters) !== '[object String]' || letters.length < 1 || random_max < letters.length) {
+                if (toString.call(letters) !== '[object String]' || letters.length < 1 || this.random_max < letters.length) {
                     return false;
                 }
             }
         }
-        if (toString.call(input.pwlength) !== '[object Number]' || input.pwlength < input.pwclass.length || length_max < input.pwlength) {
+        if (toString.call(input.pwlength) !== '[object Number]' || input.pwlength < input.pwclass.length || this.length_max < input.pwlength) {
             return false;
         }
         return true;
@@ -49,7 +48,7 @@ class pwgenerator {
             return 0;
         }
 
-        let count = Math.floor( random_max / ubound );
+        let count = Math.floor( this.random_max / ubound );
         let seed_max = ubound * count;
         let seed;
         do {
