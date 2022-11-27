@@ -72,7 +72,9 @@ class pwgenerator {
         return result;
     }
     generate(input) {
-        if (this.validate(input) === false) return null;
+        if (this.validate(input) === false) {
+            return null;
+        }
 
         // generate letters from input.pwclass
         let result_string = "";
