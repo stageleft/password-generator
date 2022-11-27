@@ -14,13 +14,17 @@ class pwgenerator {
         this.random_max = Uint8Array.BYTES_PER_ELEMENT * 256 - 1;
         this.length_max = 65535;
         if (crypto_module === null || crypto_module === undefined) {
-            if (window !== null && window.crypto !== null) {
+            if (typeof(window) === 'object' && window.crypto !== null) {
                 this.cryptomodule = window.crypto;
             } else {
                 throw 'Crypto module is not defined.';
             }
         } else {
-            this.cryptomodule = crypto_module;
+            if(typeof(crypto_module.getRandomValues) === 'function') {
+                this.cryptomodule = crypto_module;
+            } else {
+                throw 'Crypto module is illegal. It needs getRandomValues().';
+            }
         }
     }
     validate(input) {
