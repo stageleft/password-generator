@@ -77,8 +77,11 @@ class pwgenerator {
                input_string[charIndexToLast]; 
     }
     change_random_index_to_last(input_string) {
-        let charIndexToLast = this.calc_random(input_string.length);
-        return this.change_index_to_last(input_string, charIndexToLast);
+        let result_string = this.change_index_to_last(input_string, this.calc_random(input_string.length));
+        for (let j = 0; j < input_string.length * 100; j++) {
+            result_string = this.change_index_to_last(result_string, this.calc_random(input_string.length));
+        }
+        return result_string
     }
     generate(input) {
         if (this.validate(input) === false) {
@@ -96,11 +99,7 @@ class pwgenerator {
         result_string = result_string + this.generate_with_each_pwclass(input.pwclass[input.pwclass.length - 1], letter_count);
 
         // shuffle letters
-        for (let j = 0; j < result_string.length * 100; j++) {
-            result_string = this.change_random_index_to_last(result_string);
-        }
-
-        return result_string;
+        return this.change_random_index_to_last(result_string);
     }
 }
 
