@@ -4,9 +4,9 @@ env:
   es2021: true
   node: true
 extends:
-  eslint: recommended
-  plugin: jest/recommended
-  plugin: jest/style
+  - eslint:recommended
+  - plugin:jest/recommended
+  - plugin:jest/style
 overrides: []
 parserOptions:
   ecmaVersion: latest
