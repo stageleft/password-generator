@@ -9,19 +9,22 @@
 //   classに指定される「パスワード使用文字クラス」は、必ず１文字以上を記入した文字列であること。空配列も認めない。
 //      パスワード使用文字クラスは、利用する文字そのものを指定し、256文字未満であること。
 //   length の長さは、class.length 以上の大きさで指定されること。また、65536未満であること。
-const random_max = Uint8Array.BYTES_PER_ELEMENT * 256 - 1;
-const length_max = 65535;
-
 class pwgenerator {
     constructor(crypto_module) {
+        this.random_max = Uint8Array.BYTES_PER_ELEMENT * 256 - 1;
+        this.length_max = 65535;
         if (crypto_module === null || crypto_module === undefined) {
-            if (window !== null && window.crypto !== null) {
+            if (typeof(window) === 'object' && window.crypto !== null) {
                 this.cryptomodule = window.crypto;
             } else {
                 throw 'Crypto module is not defined.';
             }
         } else {
-            this.cryptomodule = crypto_module;
+            if(typeof(crypto_module.getRandomValues) === 'function') {
+                this.cryptomodule = crypto_module;
+            } else {
+                throw 'Crypto module is illegal. It needs getRandomValues().';
+            }
         }
     }
     validate(input) {
@@ -34,12 +37,12 @@ class pwgenerator {
             return false;
         } else {
             for (let letters of input.pwclass) {
-                if (toString.call(letters) !== '[object String]' || letters.length < 1 || random_max < letters.length) {
+                if (toString.call(letters) !== '[object String]' || letters.length < 1 || this.random_max < letters.length) {
                     return false;
                 }
             }
         }
-        if (toString.call(input.pwlength) !== '[object Number]' || input.pwlength < input.pwclass.length || length_max < input.pwlength) {
+        if (toString.call(input.pwlength) !== '[object Number]' || input.pwlength < input.pwclass.length || this.length_max < input.pwlength) {
             return false;
         }
         return true;
@@ -49,7 +52,7 @@ class pwgenerator {
             return 0;
         }
 
-        let count = Math.floor( random_max / ubound );
+        let count = Math.floor( this.random_max / ubound );
         let seed_max = ubound * count;
         let seed;
         do {
@@ -68,26 +71,37 @@ class pwgenerator {
         }
         return result;
     }
+    change_index_to_last(input_string, charIndexToLast) {
+        return input_string.substring(0, charIndexToLast) +
+               input_string.substring(charIndexToLast + 1, input_string.length) +
+               input_string[charIndexToLast]; 
+    }
+    change_random_index_to_last(input_string) {
+        let result_string = this.change_index_to_last(input_string, this.calc_random(input_string.length));
+        for (let j = 0; j < input_string.length * 100; j++) {
+            result_string = this.change_index_to_last(result_string, this.calc_random(input_string.length));
+        }
+        return result_string
+    }
     generate(input) {
-        if (this.validate(input) === false) return null;
+        if (this.validate(input) === false) {
+            return null;
+        }
 
         // generate letters from input.pwclass
         let result_string = "";
         let letter_count = input.pwlength;
-        for (let i = 0; i < input.pwclass.length - 1; i++) {
-            let letters_to_calc = this.calc_random(letter_count - (input.pwclass.length - 1 - i)) + 1; // range : from 1 to (input.pwlength - input.pwclass.length + 1)
+        let pwclass_max_index = input.pwclass.length - 1;
+        for (let i = 0; i < pwclass_max_index; i++) {
+            let count_letters_to_calc = letter_count - (pwclass_max_index - i);
+            let letters_to_calc = this.calc_random(count_letters_to_calc) + 1; // range : from 1 to (input.pwlength - pwclass_max_index)
             result_string = result_string + this.generate_with_each_pwclass(input.pwclass[i], letters_to_calc);
             letter_count = letter_count - letters_to_calc;
         }
-        result_string = result_string + this.generate_with_each_pwclass(input.pwclass[input.pwclass.length - 1], letter_count);
+        result_string = result_string + this.generate_with_each_pwclass(input.pwclass[pwclass_max_index], letter_count);
 
         // shuffle letters
-        for (let j = 0; j < 10000; j++) {
-            let charToLast = this.calc_random(input.pwlength - 1);
-            result_string = result_string.substring(0, charToLast) + result_string.substring(charToLast + 1, input.pwlength) + result_string[charToLast]; 
-        }
-
-        return result_string;
+        return this.change_random_index_to_last(result_string);
     }
 }
 

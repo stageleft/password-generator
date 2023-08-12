@@ -46,3 +46,13 @@ test('test with 8 letter, 3 classes', ()=>{
         expect(password).toMatch(/[0-9A-Za-z]{8}/);
     }
 });
+
+// illegal test
+test('test with 0 letter, 1 class with 10 letter', ()=>{
+    let setup = {
+        "pwclass": ["0123456789"],
+        "pwlength": 0
+    };
+    let password = password_generator.generate(setup);
+    expect(password).toBe(null);
+});
