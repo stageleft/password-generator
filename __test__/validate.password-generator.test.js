@@ -1,6 +1,6 @@
 const pwgenerator = require("../src/password-generator.js");
 const mock = require("./test-mock.js");
-const mock_webcrypto = new mock([[0]]);
+const mock_webcrypto = new mock([0]);
 const password_generator = new pwgenerator(mock_webcrypto);
 
 // illegal case test
@@ -56,3 +56,23 @@ test('test of validate(pwlength is more than largest value)', ()=>{
     expect(password_generator.validate(random_spec)).toBe(false)
 });
 
+test('test of validate(class/letter with multi pwclass is collect algorhythm)', ()=>{
+    const random_spec = {pwclass: ["ab", "AB", "01"], pwlength: 6};
+    // mock random values
+    let mock_array = [];
+    mock_array.push(1); // letter count + 1 from "ab".
+    mock_array.push([1, 2]); // letter choices from "ab".
+    mock_array.push(1); // letter count + 1 from "AB".
+    mock_array.push([1, 2]); // letter choices from "AB".
+    // letter count from "01" is (random_spec.pwlength - 2 - 2)
+    mock_array.push([1, 2]); // letter choices from "01".
+    mock_array.push([...Array(random_spec.pwlength * 101)].map((_, i) => i % random_spec.pwlength)) // shuffle count
+    const mock_webcrypto_256 = new mock(mock_array.flat());
+    const password_generator_256 = new pwgenerator(mock_webcrypto_256);
+    expect(password_generator_256.validate(random_spec)).toBe(true);
+    result_password = password_generator_256.generate(random_spec);
+    expect(result_password.length).toBe(6);
+    expect((result_password.match( /[ab]/g ) || []).length).toBe(2);
+    expect((result_password.match( /[AB]/g ) || []).length).toBe(2);
+    expect((result_password.match( /[01]/g ) || []).length).toBe(2);
+});

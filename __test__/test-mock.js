@@ -15,11 +15,11 @@ class mock {
     //  (2) otherwise, throw Exception.
     ret_value() {
         if (this.call_count >= this.return_array.length) {
-            throw 'call count over';
+            throw 'call count over. call:' + this.call_count + ', array_length:' + this.return_array.length;
         }
         let ret_value = this.return_array[this.call_count];
         this.call_count = this.call_count + 1;
-        return ret_value;
+        return [ret_value];
     }
     // mock call: mock_instance.getRandomValues(dummy_Array);
     getRandomValues() {

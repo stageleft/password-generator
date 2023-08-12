@@ -91,12 +91,14 @@ class pwgenerator {
         // generate letters from input.pwclass
         let result_string = "";
         let letter_count = input.pwlength;
-        for (let i = 0; i < input.pwclass.length - 1; i++) {
-            let letters_to_calc = this.calc_random(letter_count - (input.pwclass.length - 1 - i)) + 1; // range : from 1 to (input.pwlength - input.pwclass.length + 1)
+        let pwclass_max_index = input.pwclass.length - 1;
+        for (let i = 0; i < pwclass_max_index; i++) {
+            let count_letters_to_calc = letter_count - (pwclass_max_index - i);
+            let letters_to_calc = this.calc_random(count_letters_to_calc) + 1; // range : from 1 to (input.pwlength - pwclass_max_index)
             result_string = result_string + this.generate_with_each_pwclass(input.pwclass[i], letters_to_calc);
             letter_count = letter_count - letters_to_calc;
         }
-        result_string = result_string + this.generate_with_each_pwclass(input.pwclass[input.pwclass.length - 1], letter_count);
+        result_string = result_string + this.generate_with_each_pwclass(input.pwclass[pwclass_max_index], letter_count);
 
         // shuffle letters
         return this.change_random_index_to_last(result_string);
